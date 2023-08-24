@@ -53,15 +53,21 @@ public class Storage<T extends Number>  {
         data = newData;
     }
 
-    public void find(T value) {
+   public void find(T value) {
+        boolean found = false;
+        
         for (int i = 0; i < data.length; i++) {
-            if (data[i] == value) {
+            if (data[i] != null && data[i].equals(value)) {
                 System.out.println("Detected! It's place: " + i);
-                break;
-
-            } //throw new NoSuchElementException("find: No such cell exists");
+                found = true;
+                break;  
+            }
         }
+        
+        if (!found) {
+            throw new NoSuchElementException("find: No such element exists");
         }
+    }
 
 
     public void sort() {
