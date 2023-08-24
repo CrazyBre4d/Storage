@@ -1,13 +1,12 @@
 package vlas.entity;
 
-
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
 public class Storage<T extends Number>  {
     private T[] data;
-
+    
     public Storage() {}
 
     public Storage(T[] initialArray) {
