@@ -9,6 +9,7 @@ public class Main {
         try{
         int numberForSearch = 31;
         Storage<Integer> intStorage = new Storage<>(5);
+        Comparator<Integer> ascendingComparator = Integer::compareTo;
 
         intStorage.set(0, 1);
         intStorage.set(1, null);
@@ -23,7 +24,6 @@ public class Main {
 
         System.out.println(intStorage);
 
-        Comparator<Integer> ascendingComparator = Integer::compareTo;
         int index = intStorage.binarySearch(numberForSearch, ascendingComparator);
         String found = String.format("Element detected: %d", index);
         intStorage.binarySearch(numberForSearch,ascendingComparator);
