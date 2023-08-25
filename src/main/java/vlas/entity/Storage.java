@@ -1,16 +1,32 @@
 package vlas.entity;
 
+
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.NoSuchElementException;
 
-public class Storage<T extends Number>  {
+public class Storage<T extends Number> implements Cloneable {
     private T[] data;
-    
-    public Storage() {}
+    private int capacity;
+
+    public T[] getData() {
+        return data;
+    }
+    public int getCapacity() {
+        return capacity;
+    }
+
+    public void setData(T[] data) {
+        this.data = data;
+    }
+
+    public Storage() {
+        this.data = (T[]) new Number[capacity];
+        this.capacity = data.length;
+    }
 
     public Storage(T[] initialArray) {
-        data = Arrays.copyOf(initialArray, initialArray.length);
+        data = (T[]) initialArray;
     }
 
     public Storage(int capacity) {
@@ -21,7 +37,7 @@ public class Storage<T extends Number>  {
         if (index >= 0 && index < data.length) {
             data[index] = value;
         } else {
-           throw new IndexOutOfBoundsException("set: No such cell exists");
+            throw new IndexOutOfBoundsException("set: No such cell exists");
         }
     }
 
@@ -37,7 +53,7 @@ public class Storage<T extends Number>  {
         if (index >= 0 && index < data.length) {
             data[index] = null;
         } else {
-            throw new NoSuchElementException(" remove: No such cell exists");
+            throw new NoSuchElementException("remove: No such cell exists");
         }
     }
 
@@ -45,7 +61,7 @@ public class Storage<T extends Number>  {
         for (int i = 0; i < data.length; i++) {
             if (data[i] == null) {
                 data[i] = value;
-                return;
+                break;
             }
         }
         T[] newData = Arrays.copyOf(data, data.length + 1);
@@ -53,29 +69,33 @@ public class Storage<T extends Number>  {
         data = newData;
     }
 
-   public void find(T value) {
+    public int find(T value) {
         boolean found = false;
-        
         for (int i = 0; i < data.length; i++) {
             if (data[i] != null && data[i].equals(value)) {
-                System.out.println("Detected! It's place: " + i);
                 found = true;
-                break;  
+                return i;
             }
         }
-        
         if (!found) {
             throw new NoSuchElementException("find: No such element exists");
         }
+        return -1;
     }
-
 
     public void sort() {
         boolean swapped;
         do {
             swapped = false;
             for (int i = 0; i < data.length - 1; i++) {
-                if (data[i] != null && data[i + 1] != null && data[i].doubleValue() > data[i + 1].doubleValue()) {
+                if (data[i] == null && data[i + 1] != null) {
+                    T temp = data[i];
+                    data[i] = data[i + 1];
+                    data[i + 1] = temp;
+                    swapped = true;
+                } else if (data[i] != null && data[i + 1] != null &&
+                        data[i].doubleValue() > data[i + 1].doubleValue()) {
+
                     T temp = data[i];
                     data[i] = data[i + 1];
                     data[i + 1] = temp;
@@ -86,8 +106,8 @@ public class Storage<T extends Number>  {
     }
     public int binarySearch(T target, Comparator<T> comparator) {
         for (int i = 0; i < data.length; i++) {
-             if (data[i] == null) {
-                 throw new NullPointerException("binarySearch: Fill the array");}}
+            if (data[i] == null) {
+                throw new  NoSuchElementException("binarySearch: Fill the array");}}
 
         int left = 0;
         int right = data.length - 1;
@@ -105,9 +125,6 @@ public class Storage<T extends Number>  {
             }
         }
         return -1;
-    }
-    public int length() {
-        return data.length;
     }
 
     @Override
